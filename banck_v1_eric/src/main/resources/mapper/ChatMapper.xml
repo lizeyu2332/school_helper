@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pro.mapper.ChatMapper">
+    
+    <resultMap id="BaseResultMap" type="com.example.pro.entity.Chat">
+        <id column="id" property="id"/>
+        <result column="from_user_id" property="fromUserId"/>
+        <result column="to_user_id" property="toUserId"/>
+        <result column="product_id" property="productId"/>
+        <result column="help_id" property="helpId"/>
+        <result column="content" property="content"/>
+        <result column="is_read" property="isRead"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+    <insert id="insert" parameterType="com.example.pro.entity.Chat" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO chat (from_user_id, to_user_id, product_id, help_id, content, is_read, create_time)
+        VALUES (#{fromUserId}, #{toUserId}, #{productId}, #{helpId}, #{content}, #{isRead}, NOW())
+    </insert>
+    
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM chat WHERE id = #{id}
+    </select>
+    
+    <select id="selectByUserPair" resultMap="BaseResultMap">
+        SELECT * FROM chat 
+        WHERE (from_user_id = #{userId1} AND to_user_id = #{userId2})
+           OR (from_user_id = #{userId2} AND to_user_id = #{userId1})
+        ORDER BY create_time ASC
+    </select>
+    
+    <select id="selectUnreadByUserId" resultMap="BaseResultMap">
+        SELECT * FROM chat 
+        WHERE to_user_id = #{userId} AND is_read = 0
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectAllByUserId" resultMap="BaseResultMap">
+        SELECT * FROM chat 
+        WHERE from_user_id = #{userId} OR to_user_id = #{userId}
+        ORDER BY create_time DESC
+    </select>
+    
+    <update id="updateReadStatus">
+        UPDATE chat SET is_read = #{isRead} WHERE id = #{id}
+    </update>
+    
+    <update id="markAllRead">
+        UPDATE chat SET is_read = 1 
+        WHERE from_user_id = #{fromUserId} AND to_user_id = #{toUserId} AND is_read = 0
+    </update>
+    
+</mapper>
+

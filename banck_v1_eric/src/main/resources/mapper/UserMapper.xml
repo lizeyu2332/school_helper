@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pro.mapper.UserMapper">
+    
+    <resultMap id="BaseResultMap" type="com.example.pro.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="real_name" property="realName"/>
+        <result column="student_id" property="studentId"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    
+    <insert id="insert" parameterType="com.example.pro.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (username, password, real_name, student_id, phone, email, create_time, update_time)
+        VALUES (#{username}, #{password}, #{realName}, #{studentId}, #{phone}, #{email}, NOW(), NOW())
+    </insert>
+    
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+    
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+    
+    <select id="selectByStudentId" resultMap="BaseResultMap">
+        SELECT * FROM user WHERE student_id = #{studentId}
+    </select>
+    
+    <update id="update" parameterType="com.example.pro.entity.User">
+        UPDATE user
+        SET username = #{username},
+            password = #{password},
+            real_name = #{realName},
+            student_id = #{studentId},
+            phone = #{phone},
+            email = #{email},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+    
+</mapper>
+
