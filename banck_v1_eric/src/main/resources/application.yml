@@ -1,0 +1,56 @@
+##配置数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/secondhand_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+  mvc:
+    static-path-pattern: /static/**
+  web:
+    resources:
+      add-mappings: false  # 禁用默认的静态资源映射，使用Controller处理
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.pro.entity
+
+# 访问端口
+server:
+  port: 8090
+
+# 应用配置
+app:
+  jwt:
+    secret: patent-management-secret-key-2025
+    expiration: 86400000  # 24小时，单位：毫秒
+  file:
+    upload-path: C:/uploads/
+    allowed-types: jpg,jpeg,png,gif
+    max-size: 52428800  # 50MB
+
+
+
+
+
+
+
